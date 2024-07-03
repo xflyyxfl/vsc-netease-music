@@ -114,7 +114,7 @@ const controller = {
 			const program = song.source.type === 'djradio'
 			return Promise.resolve(program ? {} : api.song.lyric(song.id))
 			.then(data => {
-				const lyric = data.lrc ? [data.lrc.lyric, data.tlyric.lyric] : []
+				const lyric = data.lrc ? [data.lrc.lyric, data?.tlyric?.lyric??''] : [];//fixed lyric error bug 2024-07-03 16:33:27
 				runtime.duplexChannel.postMessage('load', { action, lyric, song })
 				runtime.stateManager.set('program', program)
 				runtime.playerBar.state(likes.includes(song.id) ? 'like' : 'dislike')
